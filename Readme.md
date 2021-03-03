@@ -17,7 +17,7 @@ docker-compose up --build
 ```
 Start Server, Producer and 2 Consumer.
 
-###Integration tests:
+### Integration tests:
 ```bash
 go test broker/it
 ```
