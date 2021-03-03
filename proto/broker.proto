@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package proto;
+
+service Broker {
+  rpc Produce(stream Data) returns (ProducerResponse);
+  rpc Consume(stream ClientMessage) returns (stream Message);
+}
+
+message Data {
+  string topic = 2;
+  string value = 3;
+}
+
+message Message {
+  string id = 1;
+  Data data = 2;
+}
+
+message ProducerResponse {}
+
+enum Intent {
+  SUBSCRIBE = 0;
+  CONFIRM = 1;
+}
+
+message ClientMessage {
+  Intent intent = 1;
+  string id = 2;              //messageId or topic
+}

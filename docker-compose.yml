@@ -1,0 +1,37 @@
+services:
+  server:
+    build: .
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    environment:
+      PORT: ":8080"
+    command: sh -c "go build ./server/main.go; ./main"
+  producer:
+    build: .
+    depends_on:
+      - "server"
+    environment:
+      HOST: "server"
+      PORT: ":8080"
+      DELAY: "500"
+    command: sh -c "sleep 5; go build ./producer/main.go; ./main"
+  consumer_1:
+    build: .
+    depends_on:
+      - "server"
+    environment:
+      HOST: "server"
+      PORT: ":8080"
+      CONSUMER_ID: "1"
+    command: sh -c "sleep 5; go build ./consumer/main.go; ./main"
+  consumer_2:
+    build: .
+    depends_on:
+      - "server"
+    environment:
+      HOST: "server"
+      PORT: ":8080"
+      CONSUMER_ID: "2"
+    command: sh -c "sleep 5; go build ./consumer/main.go; ./main"
